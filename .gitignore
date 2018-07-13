@@ -1,8 +1,8 @@
-set.json
-
 /__pycache__
+/logs
 /temp
 
 robots.txt
 
-settings.json
+config.json
+*.db
