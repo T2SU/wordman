@@ -13,37 +13,47 @@
     <body class="text-center">
         <header class="head-section">
             <nav class="navbar navbar-dark bg-primary navbar-static-top navbar-expand-lg">
+                <a class="navbar-brand" href="/">wordman test 1.0.0</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topbar01" aria-controls="topbar01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="/">wordman test 1.0.0</a>
                 <div class="collapse navbar-collapse" id="topbar01">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">List <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Add</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-                <form class="form-inline my-2 my-lg-0">
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Word">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">List <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Add</a>
+                        </li>
+                    </ul>
+                    <!--<form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                    </form>-->
+                    <!--<form class="form-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Word">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Synonym">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Antonym">
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-outline-success" type="submit">Fast Add</button>
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Synonym">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Antonym">
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Fast Add</button>
-                </form>
+                    </form>-->
+                            <form class="form-inline my-1 my-lg-0">
+                                <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                            <form class="form-inline my-1 my-lg-0 mx-1">
+                                <input class="form-control mr-sm-1" type="text" placeholder="Word" aria-label="World">
+                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fast Add</button>
+                            </form>
                 </div>
             </nav>
         </header>
@@ -52,30 +62,41 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th data-sortable="true" style="width:60%">Word</th>
+                        <th data-sortable="true" style="width:10%">Refer</th>
+                        <th data-sortable="true" style="width:30%" class="hidden-lg">Last Referred</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th>Apple</th>
+                        <td>5</td>
+                        <td>2018-07-13 00:00:00</td>
                     </tr>
                     <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
+                        <th>Box</th>
+                        <td>2</td>
+                        <td>2018-07-13 00:00:00</td>
                     </tr>
                     <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                        <th>Car</th>
+                        <td>7</td>
+                        <td>2018-07-13 00:00:00</td>
+                    </tr>
+                    <tr>
+                        <th>Dog</th>
+                        <td>6</td>
+                        <td>2018-07-13 00:00:00</td>
+                    </tr>
+                    <tr>
+                        <th>Elevator</th>
+                        <td>3</td>
+                        <td>2018-07-13 00:00:00</td>
+                    </tr>
+                    <tr>
+                        <th>Fire</th>
+                        <td>1</td>
+                        <td>2018-07-13 00:00:00</td>
                     </tr>
                 </tbody>
             </table>

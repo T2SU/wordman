@@ -1,1 +1,0 @@
-app_ver = 'wordman test 1.0.0'

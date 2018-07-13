@@ -28,10 +28,10 @@ class Settings:
                 return got_data[0][0]
             return ''
 
-    def get_or_input(self, key, input_name):
+    def get_or_input(self, key, input_name, expected_type = type('')):
         my_data = self.get(key)
         if not my_data:
-            my_data = read_input(input_name)
+            my_data = str(read_input(input_name, expected_type))
             self.set(key, my_data)
         return my_data;
 
