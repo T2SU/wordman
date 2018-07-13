@@ -1,0 +1,95 @@
+.word_context{
+	cursor:pointer;
+}
+
+.word_detail{
+	margin:0px;
+	padding:0px;
+	display:none;
+	width:100%;
+	background-color:#ff9999;
+	height:335px;
+	table-layout: fixed;
+	cursor:pointer;
+}
+
+.ctx {
+	display:table;
+}
+
+.thgroup {
+	display:table-header-group;
+}
+
+.tcgroup {
+	display:table-row-group;
+}
+
+.theader {
+	color: #fff;
+	background-color: #212529;
+	border-color: #32383e;
+	vertical-align: bottom;
+	font-weight:bold;
+	padding: .75rem;
+}
+
+.tdata {
+	padding: .75rem;
+	border-top: 1px solid #dee2e6;
+}
+
+.trow {
+	display:table-row;
+	width:inherit;
+}
+
+.tcell {
+	display:table-cell;
+}
+
+.c1 {
+	width:70%;
+}
+
+.c2 {
+	width:10%;
+}
+
+.c3 {
+	width:20%;
+}
+
+.ca {
+	width:100%;
+}
+
+.ci {
+	width:inherit;
+}
+
+@media screen and (max-width:767px)
+{
+	.tcell-auto-hidden {
+		display:none;
+	}
+}
+@media screen and (min-width:768px)
+{
+	.tcell-auto-hidden {
+		display:table-cell;
+	}
+}
+
+@media screen and (max-width:767px)
+{
+	.auto-hidden {
+		display:none;
+	}
+}
+@media screen and (min-width:768px)
+{
+	.auto-hidden {
+		display:block;
+	}
+}

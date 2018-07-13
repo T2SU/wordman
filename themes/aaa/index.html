@@ -1,110 +1,138 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Test</title>
-        <link rel="stylesheet" href="/themes/aaa/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/themes/aaa/css/all.css">
-        <script src="/themes/aaa/js/jquery-3.3.1.min.js"></script>
-        <script src="/themes/aaa/js/bootstrap.min.js"></script>
-        <script src="/themes/aaa/js/all.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body class="text-center">
-        <header class="head-section">
-            <nav class="navbar navbar-dark bg-primary navbar-static-top navbar-expand-lg">
-                <a class="navbar-brand" href="/">wordman test 1.0.0</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topbar01" aria-controls="topbar01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="topbar01">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">List <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Add</a>
-                        </li>
-                    </ul>
-                    <!--<form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-                    </form>-->
-                    <!--<form class="form-inline">
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Word">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Synonym">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Antonym">
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-outline-success" type="submit">Fast Add</button>
-                            </div>
-                        </div>
-                    </form>-->
-                            <form class="form-inline my-1 my-lg-0">
-                                <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-                            </form>
-                            <form class="form-inline my-1 my-lg-0 mx-1">
-                                <input class="form-control mr-sm-1" type="text" placeholder="Word" aria-label="World">
-                                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fast Add</button>
-                            </form>
-                </div>
-            </nav>
-        </header>
-        <section id="body">
-            <div class="container">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th data-sortable="true" style="width:60%">Word</th>
-                        <th data-sortable="true" style="width:10%">Refer</th>
-                        <th data-sortable="true" style="width:30%" class="hidden-lg">Last Referred</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Apple</th>
-                        <td>5</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                    <tr>
-                        <th>Box</th>
-                        <td>2</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                    <tr>
-                        <th>Car</th>
-                        <td>7</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                    <tr>
-                        <th>Dog</th>
-                        <td>6</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                    <tr>
-                        <th>Elevator</th>
-                        <td>3</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                    <tr>
-                        <th>Fire</th>
-                        <td>1</td>
-                        <td>2018-07-13 00:00:00</td>
-                    </tr>
-                </tbody>
-            </table>
-            </div>
-        </section>
-        <footer class="footer-small" id="footer">
-            <div class="container">
-            </div>
-        </footer>
-    </body>
+	<head>
+		<meta charset="utf-8">
+		<title>Test</title>
+		<link rel="stylesheet" href="/themes/aaa/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/themes/aaa/css/all.css">
+		<link rel="stylesheet" href="/themes/aaa/css/aaa.css">
+		<link rel="stylesheet" href="/themes/aaa/css/loading.css">
+		<script src="/themes/aaa/js/jquery-3.3.1.min.js"></script>
+		<script src="/themes/aaa/js/bootstrap.min.js"></script>
+		<script src="/themes/aaa/js/all.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body class="text-center">
+		<header class="head-section">
+			<nav class="navbar navbar-dark bg-primary navbar-static-top navbar-expand-lg">
+				<a class="navbar-brand" href="/">wordman test 1.0.0</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topbar01" aria-controls="topbar01" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="topbar01">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">List <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Add</a>
+						</li>
+					</ul>
+					<form class="form-inline my-1 my-lg-0">
+						<input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+					</form>
+					<form class="form-inline my-1 my-lg-0 mx-1">
+						<input class="form-control mr-sm-1" type="text" placeholder="Word" aria-label="World">
+						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fast Add</button>
+					</form>
+				</div>
+			</nav>
+		</header>
+		<section id="body">
+			<div class="container">
+				<!--<div class="ctx ci">
+					<div class="thgroup">
+						<div class="ctx ca">
+							<div class="trow">
+								<div class="theader tcell c1">Word</div>
+								<div class="theader tcell c2">Refer</div>
+								<div class="theader tcell-auto-hidden c3">Last Referred</div>
+							</div>
+						</div>
+					</div>
+					<div class="tcgroup">
+						<div class="ctx word_context ca">
+							<div class="tdata tcell word c1">Apple</div>
+							<div class="tdata tcell c2">1</div>
+							<div class="tdata tcell-auto-hidden c3">2018-07-13 00:00:00</div>
+							<div class="trow">
+								<div class="ctx ca">
+									<div class="tcell">
+										<div class="word_detail ci"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ctx word_context ca">
+							<div class="tdata tcell word c1">Box</div>
+							<div class="tdata tcell c2">2</div>
+							<div class="tdata tcell-auto-hidden c3">2018-07-13 00:00:00</div>
+							<div class="trow">
+								<div class="ctx ca">
+									<div class="trow">
+										<div class="word_detail ci"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>-->
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th data-sortable="true" class="c1">Word</th>
+							<th data-sortable="true" class="c2">Refer</th>
+							<th data-sortable="true" class="c3 auth-hidden">Last Referred</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="word_context">
+							<th class="word">Apple</th>
+							<td>5</td>
+							<td>2018-07-13 00:00:00</td>
+						</tr>
+						<tr class="word_context">
+							<th>Box</th>
+							<td>2</td>
+							<td>2018-07-13 00:00:00</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<footer class="footer-small" id="footer">
+			<div class="container">
+			</div>
+		</footer>
+
+		<script>
+			
+			function word_detail_open(event) {
+				var word = $(this).find(".word").html();
+				var new_row = $('<tr class="word_detail"><td></td></tr>').insertAfter(this);
+				var new_td = new_row.find("td");
+				new_td.attr('colspan', '3');
+				new_td.css("background-color", "pink");
+				new_td.css("font-weight", "bold");
+				new_td.css("font-size", "32pt");
+				new_td.html('It Works!!');
+
+				new_row.fadeToggle(500, function () {
+					new_row.show();
+				});
+
+				new_row.click(word_detail_close);
+			}
+
+			function word_detail_close(event) {
+				$(this).fadeToggle(500, function () {
+					$(this).remove();
+				});
+			}
+
+			$('.word_context').click(word_detail_open);
+
+		</script>
+	</body>
 </html>
