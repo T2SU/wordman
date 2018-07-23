@@ -7,10 +7,9 @@
 	padding:0px;
 	display:none;
 	width:100%;
-	background-color:#ff9999;
 	height:335px;
 	table-layout: fixed;
-	cursor:pointer;
+	/* cursor:pointer; */
 }
 
 .ctx {
@@ -92,4 +91,16 @@
 	.auto-hidden {
 		display:block;
 	}
+}
+
+.card {
+	text-align: left;
+	margin: 2 2;
+}
+
+.card-font {
+    font-family: Verdana,sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+	font-weight: normal;
 }

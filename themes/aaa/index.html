@@ -106,28 +106,29 @@
 		<script>
 			
 			function word_detail_open(event) {
-				var word = $(this).find(".word").html();
-				var new_row = $('<tr class="word_detail"><td></td></tr>').insertAfter(this);
-				var new_td = new_row.find("td");
-				new_td.attr('colspan', '3');
-				new_td.css("background-color", "pink");
-				new_td.css("font-weight", "bold");
-				new_td.css("font-size", "32pt");
-				new_td.html('It Works!!');
-
-				new_row.fadeToggle(500, function () {
-					new_row.show();
-				});
-
-				new_row.click(word_detail_close);
+                if ($(this).data('mode') != 'detail') {
+				    var word = $(this).find(".word").html();
+                    var new_row = $('<tr class="word_detail"><td></td></tr>').insertAfter(this);
+                    var new_td = new_row.find("td");
+                    new_td.attr('colspan', '3');
+                    new_td.css("background-color", "white");
+                    new_td.css("font-weight", "bold");
+                    new_td.css("font-size", "32pt");
+                    new_td.html('<div class="card"><div class="card-body"><h4 class="card-title">Examples</h4><p class="card-text card-font">example texts</p></div><div class="card-body"><h4 class="card-title">Synonyms</h4><p class="card-text card-font">synonym texts</p></div><div class="card-body"><h4 class="card-title">Antonyms</h4><p class="card-text card-font">antonym texts</p></div></div>');
+                    $(this).data('mode', 'detail');
+                    new_row.fadeIn(150, function () {
+                        new_row.show();
+                    });
+                    $(this).data('new_row', new_row);
+                }
+                else {
+                    var new_row = $(this).data('new_row');
+                    new_row.fadeOut(150, function () {
+                        new_row.remove();
+                    });
+                    $(this).data('mode', 'summary');
+                }
 			}
-
-			function word_detail_close(event) {
-				$(this).fadeToggle(500, function () {
-					$(this).remove();
-				});
-			}
-
 			$('.word_context').click(word_detail_open);
 
 		</script>
