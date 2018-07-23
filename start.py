@@ -2,8 +2,10 @@ if __name__ != '__main__':
     print('this is a script that should be executed directly.')
     quit()
 
+import json
+
 from setup import *
-from flask import Flask, request, send_from_directory, send_file
+from flask import Flask, request, send_from_directory, send_file, render_template
 from flask_compress import Compress
 from flask_reggie import Reggie
 
@@ -30,27 +32,26 @@ logging.debug('http port = ' + my_port)
 
 
 # Start HTTP Server
-app = Flask(__name__)
+app = Flask(__name__, template_folder = './themes')
 Reggie(app)
 compress = Compress()
 compress.init_app(app)
 
+def put_data():
+    ret = {}
+    data = {'Apple':{'Ref':5, 'Date':'2017-01-01 00:00:00'}, 'Box':{'Ref':11, 'Date':'2017-01-01 12:34:56'}, 'Car':{'Ref':756, 'Date':'2017-01-01 02:47:01'}}
+    ret['app_ver'] = app_ver
+    ret['data'] = data
+    return ret
+
 @app.route('/')
 def main():
-    return send_from_directory('./themes/aaa', 'index.html')
+    return render_template('aaa/index.html', data=put_data()) # html_minify()
 
 @app.route('/themes/<path:name>')
 def themes(name = None):
     parent_dir = './themes/' + os.path.dirname(name)
     file_name = os.path.basename(name)
-    #ext = os.path.splitext(file_name)[1][1:]
-    #if ext == 'css' or ext == 'less' or ext == 'scss':
-    #    return css_minify(send_from_directory(parent_dir, file_name))   
-    #elif ext == 'js' or ext =='json':
-    #    return js_minify(send_from_directory(parent_dir, file_name))
-    #elif ext == 'html':
-    #    return html_minify(send_from_directory(parent_dir, file_name))   
-    #else:
     return send_from_directory(parent_dir, file_name)
 
 app.secret_key = my_key

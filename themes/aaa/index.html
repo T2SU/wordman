@@ -15,7 +15,7 @@
 	<body class="text-center">
 		<header class="head-section">
 			<nav class="navbar navbar-dark bg-primary navbar-static-top navbar-expand-lg">
-				<a class="navbar-brand" href="/">wordman test 1.0.0</a>
+				<a class="navbar-brand" href="/">{{ data['app_ver'] }}</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topbar01" aria-controls="topbar01" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -87,16 +87,13 @@
 						</tr>
 					</thead>
 					<tbody>
+                        {% for word, context in data['data'].items() %}
 						<tr class="word_context">
-							<th class="word">Apple</th>
-							<td>5</td>
-							<td>2018-07-13 00:00:00</td>
+							<th class="word">{{ word }}</th>
+							<td>{{ context['Ref'] }}</td>
+							<td>{{ context['Date'] }}</td>
 						</tr>
-						<tr class="word_context">
-							<th>Box</th>
-							<td>2</td>
-							<td>2018-07-13 00:00:00</td>
-						</tr>
+                        {% endfor %}
 					</tbody>
 				</table>
 			</div>
