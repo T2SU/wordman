@@ -8,8 +8,20 @@
 	display:none;
 	width:100%;
 	height:335px;
+	background-color: #fff;
 	table-layout: fixed;
 	/* cursor:pointer; */
+}
+
+@media (max-width: 576px) {
+	.max-btn{
+		display: block;
+		width: 100%;
+	}
+}
+
+ul {
+	line-height: 1.8;
 }
 
 .ctx {
@@ -80,16 +92,16 @@
 	}
 }
 
-@media screen and (max-width:767px)
+@media screen and (max-width:991px)
 {
 	.auto-hidden {
 		display:none;
 	}
 }
-@media screen and (min-width:768px)
+@media screen and (min-width:992px)
 {
 	.auto-hidden {
-		display:block;
+		display:table-cell;
 	}
 }
 

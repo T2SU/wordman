@@ -41,49 +41,12 @@
 		</header>
 		<section id="body">
 			<div class="container">
-				<!--<div class="ctx ci">
-					<div class="thgroup">
-						<div class="ctx ca">
-							<div class="trow">
-								<div class="theader tcell c1">Word</div>
-								<div class="theader tcell c2">Refer</div>
-								<div class="theader tcell-auto-hidden c3">Last Referred</div>
-							</div>
-						</div>
-					</div>
-					<div class="tcgroup">
-						<div class="ctx word_context ca">
-							<div class="tdata tcell word c1">Apple</div>
-							<div class="tdata tcell c2">1</div>
-							<div class="tdata tcell-auto-hidden c3">2018-07-13 00:00:00</div>
-							<div class="trow">
-								<div class="ctx ca">
-									<div class="tcell">
-										<div class="word_detail ci"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="ctx word_context ca">
-							<div class="tdata tcell word c1">Box</div>
-							<div class="tdata tcell c2">2</div>
-							<div class="tdata tcell-auto-hidden c3">2018-07-13 00:00:00</div>
-							<div class="trow">
-								<div class="ctx ca">
-									<div class="trow">
-										<div class="word_detail ci"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>-->
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
 							<th data-sortable="true" class="c1">Word</th>
 							<th data-sortable="true" class="c2">Refer</th>
-							<th data-sortable="true" class="c3 auth-hidden">Last Referred</th>
+							<th data-sortable="true" class="c3 auto-hidden">Last Referred</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -91,7 +54,7 @@
 						<tr class="word_context">
 							<th class="word">{{ word }}</th>
 							<td>{{ context['Ref'] }}</td>
-							<td>{{ context['Date'] }}</td>
+							<td class="auto-hidden">{{ context['Date'] }}</td>
 						</tr>
                         {% endfor %}
 					</tbody>
@@ -111,19 +74,50 @@
                     var new_row = $('<tr class="word_detail"><td></td></tr>').insertAfter(this);
                     var new_td = new_row.find("td");
                     new_td.attr('colspan', '3');
-                    new_td.css("background-color", "white");
-                    new_td.css("font-weight", "bold");
-                    new_td.css("font-size", "32pt");
-                    new_td.html('<div class="card"><div class="card-body"><h4 class="card-title">Examples</h4><p class="card-text card-font">example texts</p></div><div class="card-body"><h4 class="card-title">Synonyms</h4><p class="card-text card-font">synonym texts</p></div><div class="card-body"><h4 class="card-title">Antonyms</h4><p class="card-text card-font">antonym texts</p></div></div>');
+
+                    var card = $('<div class="card"></div>');
+
+                    var examples_body = $('<div class="card-body"></div>');
+                    examples_body.append('<h4 class="card-title">Examples</h4>');
+
+                    var examples_ul = $('<ul></ul>');
+                    examples_ul.append('<li>First Example..</li>');
+                    examples_ul.append('<li>Second Example..</li>');
+                    examples_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Example..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+                    examples_body.append(examples_ul);
+
+                    var synonyms_body = $('<div class="card-body"></div>');
+                    synonyms_body.append('<h4 class="card-title">Synonyms</h4>');
+
+                    var synonyms_ul = $('<ul></ul>');
+                    synonyms_ul.append('<li>First Synonym..</li>');
+                    synonyms_ul.append('<li>Second Synonym..</li>');
+                    synonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Synonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+                    synonyms_body.append(synonyms_ul);
+
+                    var antonyms_body = $('<div class="card-body"></div>');
+                    antonyms_body.append('<h4 class="card-title">Antonyms</h4>');
+
+                    var antonyms_ul = $('<ul></ul>');
+                    antonyms_ul.append('<li>First Antonym..</li>');
+                    antonyms_ul.append('<li>Second Antonym..</li>');
+                    antonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Antonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+                    antonyms_body.append(antonyms_ul);
+
+                    card.append(examples_body);
+                    card.append(synonyms_body);
+                    card.append(antonyms_body);
+                    new_td.append(card);
+                    
                     $(this).data('mode', 'detail');
-                    new_row.fadeIn(150, function () {
+                    new_row.fadeIn(250, function () {
                         new_row.show();
                     });
                     $(this).data('new_row', new_row);
                 }
                 else {
                     var new_row = $(this).data('new_row');
-                    new_row.fadeOut(150, function () {
+                    new_row.fadeOut(250, function () {
                         new_row.remove();
                     });
                     $(this).data('mode', 'summary');
