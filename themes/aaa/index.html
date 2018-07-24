@@ -112,7 +112,8 @@
                         $('html, body').animate({
                             scrollTop: word_rows.offset().top
                         }, 1000);
-                        $('#new_word').val('');                    },
+                        $('#new_word').val('');
+                    },
                     error:function(res,st,req){
                         if (res.status == 400) {
                             alert('이미 있는듯?');
