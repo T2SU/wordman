@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -95,6 +95,7 @@
                         $('html, body').animate({
                             scrollTop: word_rows.offset().top
                         }, 1000);
+		$('#new_word').val('');
                     },
                     error:function(res,st,req){
                         if (res.status == 400) {
