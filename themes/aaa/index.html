@@ -32,10 +32,10 @@
 						<input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search">
 						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
 					</form>
-					<form class="form-inline my-1 my-lg-0 mx-1">
-						<input class="form-control mr-sm-1" type="text" placeholder="Word" aria-label="World">
-						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Fast Add</button>
-					</form>
+					<div class="form-inline my-1 my-lg-0 mx-1">
+						<input class="form-control mr-sm-1" type="text" placeholder="Word" aria-label="Word" name="new_word" id="new_word">
+						<button class="btn btn-outline-light my-2 my-sm-0" id="add_word">Add Word</button>
+					</div>
 				</div>
 			</nav>
 		</header>
@@ -49,12 +49,12 @@
 							<th data-sortable="true" class="c3 auto-hidden">Last Referred</th>
 						</tr>
 					</thead>
-					<tbody>
-                        {% for word, context in data['data'].items() %}
+					<tbody id="word_rows">
+                        {% for row in data['data'] %}
 						<tr class="word_context">
-							<th class="word">{{ word }}</th>
-							<td>{{ context['Ref'] }}</td>
-							<td class="auto-hidden">{{ context['Date'] }}</td>
+							<th class="word">{{ row[0] }}</th>
+							<td>{{ row[1] }}</td>
+							<td class="auto-hidden">{{ row[2] }}</td>
 						</tr>
                         {% endfor %}
 					</tbody>
@@ -68,6 +68,51 @@
 
 		<script>
 			
+            function new_word() {
+                var nw = $('#new_word');
+                var val = nw.val().trim();
+                if (val.length == 0)
+                    return;
+                var dat = {"word":val};
+                $.ajax({
+                    type:'POST',
+                    url:'/add',
+                    data:dat,
+                    success:function(res,st,req){
+                        var result_data = $.parseJSON(res);
+                        var word_rows = $("#word_rows");
+                        var row1 = $('<tr class="word_context"></tr>');
+                        var col_word = $('<th class="word"></th>');
+                        var col_ref = $('<td></td>');
+                        var col_time = $('<td class="auto-hidden"></td>');
+                        col_word.append(result_data['word']);
+                        col_ref.append(result_data['ref']);
+                        col_time.append(result_data['time']);
+                        row1.append(col_word);
+                        row1.append(col_ref);
+                        row1.append(col_time);
+                        word_rows.append(row1);
+                        $('html, body').animate({
+                            scrollTop: word_rows.offset().top
+                        }, 1000);
+                    },
+                    error:function(res,st,req){
+                        if (res.status == 400) {
+                            alert('이미 있는듯?');
+                        } else {
+                            alert('error?');
+                        }
+                    },
+                });
+            }
+
+            $('#add_word').click(new_word);
+            $('#new_word').keypress(function(e) {
+                if(e.which == 13) {
+                    new_word();
+                }
+            });
+
 			function word_detail_open(event) {
                 if ($(this).data('mode') != 'detail') {
 				    var word = $(this).find(".word").html();
@@ -126,7 +171,8 @@
                     first_example_li.click(edit_handler);
                     second_example_li.click(edit_handler);
 
-                    examples_ul.append('<li><form class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Example..."/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></div></div></div></form></li>');
+                    var new_example_form = $('<li><form class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Example..."/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></div></div></div></form></li>');
+                    examples_ul.append(new_example_form);
                     examples_body.append(examples_ul);
 
                     var synonyms_body = $('<div class="card-body"></div>');

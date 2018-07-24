@@ -10,6 +10,9 @@ import urllib.request
 from css_html_js_minify import html_minify, js_minify, css_minify
 from threading import Thread
 
+def curtime():
+	return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+
 class setup:
 	def init():
 		if not os.path.exists('themes'):
@@ -39,3 +42,4 @@ class setup:
 		rootLogger.addHandler(consoleHandler)
 
 		rootLogger.setLevel(logging.DEBUG)
+

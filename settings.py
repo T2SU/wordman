@@ -8,11 +8,11 @@ def init_settings(db_name):
 class Settings:
     def __init__(self, name):
         self.db_name = name
-        logging.debug('db name = ' + self.db_name)
+        logging.debug('[settings] db name = ' + self.db_name)
         with sqlite3.connect(self.db_name + '.db', check_same_thread = False) as conn:
             curs = conn.cursor()
             curs.execute('create table if not exists `settings` (`key` text not null, `data` text, primary key (`key`))')
-        logging.debug('ready db and settings')
+        logging.debug('[settings] ready db and settings')
 
     def set(self, key, value):
         with sqlite3.connect(self.db_name + '.db', check_same_thread = False) as conn:
