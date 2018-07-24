@@ -2,6 +2,9 @@ import sqlite3
 import logging
 from setup import curtime
 
+# 단어 관련 클래스 집합 스크립트
+
+
 def init_words(db_name):
     return Words(db_name)
 
@@ -13,6 +16,9 @@ def init_synonyms(db_name):
 
 def init_antonyms(db_name):
     return AntonymWordContext(db_name)
+
+
+# Words 클래스
 
 class Words:
     def __init__(self, name):
@@ -47,7 +53,7 @@ class Words:
 
             s = (page - 1) * 50
                 
-            query = 'select `word`, `ref`, `lastref` from `words` order by `' + orderby + '` ' + d + ' limit ' + str(s) + ', 50';
+            query = 'select `word`, `ref`, `lastref` from `words` order by `' + orderby + '` collate nocase ' + d + ' limit ' + str(s) + ', 50';
             curs.execute(query)
             ret = curs.fetchall()
             return ret

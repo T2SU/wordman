@@ -19,6 +19,12 @@ from word import *
 
 app_ver = 'wordman test 1.0.1'
 
+
+
+
+###### 프로그램 초기화 및 설정 시작 ######
+
+
 setup.init()
 logging.info(app_ver)
 
@@ -42,26 +48,30 @@ Reggie(app)
 compress = Compress()
 compress.init_app(app)
 
+
+###### 프로그램 초기화 및 설정 끝 ######
+
+
+
+
+
+###### 로직 영역 시작 ######
+
+
+# 사전 단어 데이터 가져오는 함수.
 def get_data(orderby, d, page):
-    # ret = {}
-    # data = {'Apple':{'Ref':5, 'Date':'2017-01-01 00:00:00'}, 'Box':{'Ref':11, 'Date':'2017-01-01 12:34:56'}, 'Car':{'Ref':756, 'Date':'2017-01-01 02:47:01'}}
-    # ret['app_ver'] = app_ver
-    # ret['data'] = data
-    # return ret
-    ret = {}
+    ret = {}                                          # 데이터를 저장하여 반환할 딕쎠너리
     ret['app_ver'] = app_ver
-    ret['data'] = words.load_words(orderby, d, page)
+    ret['data'] = words.load_words(orderby, d, page)  # 디비에서 지정된 옵션으로 단어를 가져온다.
     return ret
 
 @app.route('/')
 def main():
-    orderby = request.args.get('orderby')
-    d = request.args.get('dir')
-    page = request.args.get('page')
-    logging.debug('orderby = ' + str(orderby))
-    logging.debug('d = ' + str(d))
-    logging.debug('page = ' + str(page))
-    return render_template('aaa/index.html', data=get_data(orderby, d, page))
+    orderby = request.args.get('orderby')            # GET 으로 전달된 'orderby' 값 (어느 열 기준으로 정렬할지)
+    d = request.args.get('dir')                      # GET 으로 전달된 'dir' 값. (오름차순/내림차순)
+    page = request.args.get('page')                  # GET 으로 전달된 'page' 값. (몇 페이지를 볼 것인가?)
+
+    return render_template('aaa/index.html', data=get_data(orderby, d, page)) # get_data 함수로 사전 단어 데이터를 가져온다.
 
 @app.route('/add', methods=['POST'])
 def add_word():
@@ -69,15 +79,29 @@ def add_word():
     logging.debug('add word = ' + word)
 
     try:
-        words.new_word(word)
-        ret = {}
+        words.new_word(word)           # 새 단어를 DB에 넣는다.
+        ret = {}                       # HTML로 전달할 데이터용 딕쎠너리를 생성.
         ret['word'] = word
         ret['ref'] = '0'
-        ret['time'] = curtime() 
-        return json.dumps(ret)
-    except sqlite3.IntegrityError:
-        abort(400)
+        ret['time'] = curtime()        # 현재시간을 Last Referred로 기본 지정.
+        return json.dumps(ret)         # JSON으로 만들어서 HTML로 반환. (AJAX 기법을 사용한다.)
+    
+    except sqlite3.IntegrityError: # 단어 추가시도하다가 이미 있는 단어면 이 예외가 나오더라.
+        abort(400)                 # HTTP 에러 코드 400을 보냄. html에서 400을 받으면 중복 단어로 처리하게 만들어야 한다.
         
+
+
+###### 로직 영역 끝 ######
+
+
+
+
+
+
+
+
+# 기타 HTML 처리 파트 및 서버 시작 파트.
+
 
 @app.route('/themes/<path:name>')
 def themes(name = None):
