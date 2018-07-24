@@ -18,6 +18,23 @@
 		display: block;
 		width: 100%;
 	}
+	.max-100{
+		width: 100%;
+	}
+}
+@media (min-width: 576px) {
+	.min-table{
+		display: table;
+	}
+	.min-table-row{
+		display: table-row;
+	}
+	.min-table-cell{
+		display: table-cell;
+	}
+	.min-100{
+		width: 100%;
+	}
 }
 
 ul {
@@ -115,4 +132,15 @@ ul {
     font-size: 15px;
     line-height: 1.5;
 	font-weight: normal;
+}
+
+.detail_context {
+	display:block;
+}
+
+.detail_edit {
+	display:block;
+	float:right;
+	text-align:right;
+	/* width:100%; */
 }

@@ -5,8 +5,8 @@
 		<title>Test</title>
 		<link rel="stylesheet" href="/themes/aaa/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/themes/aaa/css/all.css">
-		<link rel="stylesheet" href="/themes/aaa/css/aaa.css">
 		<link rel="stylesheet" href="/themes/aaa/css/loading.css">
+		<link rel="stylesheet" href="/themes/aaa/css/aaa.css">
 		<script src="/themes/aaa/js/jquery-3.3.1.min.js"></script>
 		<script src="/themes/aaa/js/bootstrap.min.js"></script>
 		<script src="/themes/aaa/js/all.js"></script>
@@ -81,9 +81,52 @@
                     examples_body.append('<h4 class="card-title">Examples</h4>');
 
                     var examples_ul = $('<ul></ul>');
-                    examples_ul.append('<li>First Example..</li>');
-                    examples_ul.append('<li>Second Example..</li>');
-                    examples_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Example..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+
+                    var first_example_li = $('<li></li>');
+                    var second_example_li = $('<li></li>');
+                    first_example_li.html('First Example..');
+                    second_example_li.html('Second Example..');
+                    examples_ul.append(first_example_li);
+                    examples_ul.append(second_example_li);
+
+                    var edit_handler = function(evtobj) {
+                        var t = $(this);
+                        var v = t.data('mode');
+                        if (v != 'editing') {
+                            var ctx = t.html();
+                            var edit_textbox = $('<input type="text" class="form-control form-control-sm mr-sm-1"/>');
+                            edit_textbox.val(ctx);
+                            t.html(edit_textbox);
+                            edit_textbox.focus();
+
+                            t.data('mode', 'editing');
+                            t.data('textbox', edit_textbox);
+                            t.data('context', t);
+                            
+                            var edit_completed_handler = function() {
+                                var textbox = t.data('textbox');
+                                var context = t.data('context');
+                                t.data('mode', 'normal');
+                                t.data('textbox', null);
+                                t.data('context', null);
+                                var edited = textbox.val();
+                                textbox.remove();
+                                context.html(edited);
+                            }
+
+                            edit_textbox.focusout(edit_completed_handler);
+                            edit_textbox.keypress(function(e) {
+                                if(e.which == 13) {
+                                    edit_completed_handler();
+                                }
+                            });
+                        }
+                    };
+
+                    first_example_li.click(edit_handler);
+                    second_example_li.click(edit_handler);
+
+                    examples_ul.append('<li><form class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Example..."/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></div></div></div></form></li>');
                     examples_body.append(examples_ul);
 
                     var synonyms_body = $('<div class="card-body"></div>');
@@ -92,7 +135,7 @@
                     var synonyms_ul = $('<ul></ul>');
                     synonyms_ul.append('<li>First Synonym..</li>');
                     synonyms_ul.append('<li>Second Synonym..</li>');
-                    synonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Synonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+                    synonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1" placeholder="New Synonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
                     synonyms_body.append(synonyms_ul);
 
                     var antonyms_body = $('<div class="card-body"></div>');
@@ -101,7 +144,7 @@
                     var antonyms_ul = $('<ul></ul>');
                     antonyms_ul.append('<li>First Antonym..</li>');
                     antonyms_ul.append('<li>Second Antonym..</li>');
-                    antonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1 sm-2" placeholder="New Antonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
+                    antonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1" placeholder="New Antonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
                     antonyms_body.append(antonyms_ul);
 
                     card.append(examples_body);
