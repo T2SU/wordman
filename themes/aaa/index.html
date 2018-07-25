@@ -110,8 +110,8 @@
 
                         // 새로 생긴 단어 쪽으로 스크롤링..
                         $('html, body').animate({
-                            scrollTop: word_rows.offset().top
-                        }, 1000);
+                            scrollTop: row1.offset().top
+                        }, 250);
                         $('#new_word').val('');
                     },
                     error:function(res,st,req){
@@ -139,11 +139,31 @@
             });
 
 
+            function collapse(ths) {
+                // 임시 저장 값에 저장된 새롭게 만든 테이블 행을 불러온다.
+                var new_row = ths.data('new_row');
+
+                // 새롭게 삽입되었던 행을 fade 효과로 사라지게 하고, 다 사라지면 태그 삭제.
+                // new_row.fadeOut(250, function () {
+                    new_row.remove();
+                // });
+
+                // 지금 이 세부 항목은 닫혀 있다고 나타내기 위한 임시 저장 값 저장.
+                ths.data('mode', 'summary');
+            }
+
             // 단어 세부 항목을 열었을때 처리.
 			function word_detail_open(event) {
 
                 // 단어 세부 항목이 열려 있지 않은 상태이다. 세부 항목을 열어야 한다.
                 if ($(this).data('mode') != 'detail') {
+
+                    // 열린걸 우선 모두 닫아버리기.
+                    $('.word_context').each(function (i, e){
+                        if ($(this).data('mode') === 'detail') {
+                            collapse($(this));
+                        }
+                    });
 
                     // 클릭된 태그 하위에서 class가 word인걸 찾아서 그 내용을 word 변수에 저장한다.
 				    var word = $(this).find(".word").html();
@@ -159,109 +179,174 @@
                     // card 내부에 사용되는 부트스트랩의 card-body 클래스 사용.
                     // examples, synonyms, antonyms 각각 다른 card-body를 쓸거다.
                     var examples_body = $('<div class="card-body"></div>');
+                    var synonyms_body = $('<div class="card-body"></div>');
+                    var antonyms_body = $('<div class="card-body"></div>');
 
                     // 커다랗게 h4로 제목을 붙인다.
                     examples_body.append('<h4 class="card-title">Examples</h4>');
-
-                    // First Example, Second Example 테스트 항목을 생성한다. 나중에 서버랑 연동시켜서 서버에서 받아오게 고쳐야 한다.
-                    var examples_ul = $('<ul></ul>');
-                    var first_example_li = $('<li></li>');
-                    var second_example_li = $('<li></li>');
-                    first_example_li.html('First Example..');
-                    second_example_li.html('Second Example..');
-                    examples_ul.append(first_example_li);
-                    examples_ul.append(second_example_li);
-
-                    // 예문을 클릭했을때, 편집 입력창으로 바뀌는 핸들러 함수이다.
-                    var edit_handler = function(evtobj) {
-                        var t = $(this);
-                        var v = t.data('mode');
-                        if (v != 'editing') {
-                            // 텍스트 내용을 ctx 변수에 저장.
-                            var ctx = t.html();
-
-                            // 편집 입력창 태그임.
-                            var edit_textbox = $('<input type="text" class="form-control form-control-sm mr-sm-1"/>');
-
-                            // 편집 입력창 내용에 ctx 변수에 저장된 내용으로 넣기.
-                            edit_textbox.val(ctx);
-
-                            // 텍스트 내용 대신에 편집 입력창으로 대체.
-                            t.html(edit_textbox);
-
-                            // 편집 입력창에 포커싱.
-                            edit_textbox.focus();
-
-                            // 입력 포커싱 해제 핸들러에서 쓰기 위한 임시 저장 값 저장.
-                            t.data('mode', 'editing');
-                            t.data('textbox', edit_textbox);
-                            t.data('context', t);
-                            
-                            // 편집 입력창의 포커싱이 해제되었을때 처리할 이벤트 핸들러.
-                            // 나중에 서버랑도 연동해야함.
-                            var edit_completed_handler = function() {
-                                var textbox = t.data('textbox');
-                                var context = t.data('context');
-
-                                // 임시 저장 값 삭제.
-                                t.data('mode', 'normal');
-                                t.data('textbox', null);
-                                t.data('context', null);
-
-                                // var edited = 새로운 값
-                                var edited = textbox.val();
-
-                                // 만들었던 편집 입력창 삭제.
-                                textbox.remove();
-
-                                // 편집 입력창의 내용 (edited) 로 편집 입력창 대신 대체.
-                                context.html(edited);
-                            }
-
-
-                            // 편집 입력창에 포커싱 해제 이벤트 핸들러 등록 및 키 이벤트 핸들러 등록.
-                            // 키 이벤트는 포커싱 해제 대신 엔터키를 쳐도 포커싱 해제처럼 이벤트 핸들러가 실행되게 하려고.
-                            edit_textbox.focusout(edit_completed_handler);
-                            edit_textbox.keypress(function(e) {
-                                if(e.which == 13) {
-                                    edit_completed_handler();
-                                }
-                            });
-                        }
-                    };
-
-                    // 위에 정의된, 예문 클릭시 편집 텍스트로 바뀌는 핸들러를 예문들에 클릭 이벤트 핸들러로 등록한다.
-                    first_example_li.click(edit_handler);
-                    second_example_li.click(edit_handler);
-
-                    // 새로운 예문 등록
-                    var new_example_form = $('<li><form class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Example..."/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></div></div></div></form></li>');
-                    examples_ul.append(new_example_form);
-                    examples_body.append(examples_ul);
-
-
-                    // Synonym 파트. 나중에 Example 파트에서 복사해와야함.
-                    var synonyms_body = $('<div class="card-body"></div>');
                     synonyms_body.append('<h4 class="card-title">Synonyms</h4>');
-
-                    var synonyms_ul = $('<ul></ul>');
-                    synonyms_ul.append('<li>First Synonym..</li>');
-                    synonyms_ul.append('<li>Second Synonym..</li>');
-                    synonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1" placeholder="New Synonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
-                    synonyms_body.append(synonyms_ul);
-
-
-                    // Antonym 파트. 나중에 Example 파트에서 복사해와야함.
-                    var antonyms_body = $('<div class="card-body"></div>');
                     antonyms_body.append('<h4 class="card-title">Antonyms</h4>');
 
+                    var examples_ul = $('<ul></ul>');
+                    var synonyms_ul = $('<ul></ul>');
                     var antonyms_ul = $('<ul></ul>');
-                    antonyms_ul.append('<li>First Antonym..</li>');
-                    antonyms_ul.append('<li>Second Antonym..</li>');
-                    antonyms_ul.append('<li><form class="form-inline"><input type="text" class="form-control form-control-sm mr-sm-1" placeholder="New Antonym..."/><button class="btn btn-sm btn-info my-1 px-4 max-btn">Add</button></form></li>');
-                    antonyms_body.append(antonyms_ul);
+
+                    // insert_form : 새로운 예문을 추가하는 텍스트박스 및 버튼 바로 전에 넣을거니까 그 텍스트박스 및 버튼.
+                    // value : 내용
+                    // detail_type : 서버에 요청할 정보 타입. 'examples', 'synonyms' 등
+                    function create_new_word_detail_item(insert_form, value, detail_type) {
+                        var item_li = $('<li></li>');
+                        item_li.html(value);
+                        item_li.insertBefore(insert_form);
+
+                        // 예문을 클릭했을때, 편집 입력창으로 바뀌는 핸들러 함수이다.
+                        var edit_handler = function(evtobj) {
+                            var t = $(this);
+                            var v = t.data('mode');
+                            if (v != 'editing') {
+                                // 텍스트 내용을 ctx 변수에 저장. 및 'oldvalue' 임시 저장 값으로 저장.
+                                var ctx = t.html();
+                                t.data('oldvalue', ctx);
+
+                                // 편집 입력창 태그임.
+                                var edit_textbox = $('<input type="text" class="form-control form-control-sm mr-sm-1"/>');
+
+                                // 편집 입력창 내용에 ctx 변수에 저장된 내용으로 넣기.
+                                edit_textbox.val(ctx);
+
+                                // 텍스트 내용 대신에 편집 입력창으로 대체.
+                                t.html(edit_textbox);
+
+                                // 편집 입력창에 포커싱.
+                                edit_textbox.focus();
+
+                                // 입력 포커싱 해제 핸들러에서 쓰기 위한 임시 저장 값 저장.
+                                t.data('mode', 'editing');
+                                t.data('textbox', edit_textbox);
+                                t.data('context', t);
+                                
+                                // 편집 입력창의 포커싱이 해제되었을때 처리할 이벤트 핸들러.
+                                // 나중에 서버랑도 연동해야함.
+                                var edit_completed_handler = function() {
+                                    var textbox = t.data('textbox');
+                                    var context = t.data('context');
+
+                                    // 임시 저장 값 삭제.
+                                    t.data('mode', 'normal');
+                                    t.data('textbox', null);
+                                    t.data('context', null);
+
+                                    // var edited = 새로운 값
+                                    var edited = textbox.val();
+
+                                    // 만들었던 편집 입력창 삭제.
+                                    textbox.remove();
+
+                                    // 편집 입력창의 내용 (edited) 로 편집 입력창 대신 대체.
+                                    context.html('(Processing..)');
+                                    save_word_detail(t, edited, insert_form, detail_type);
+                                };
+
+                                // 편집 입력창에 포커싱 해제 이벤트 핸들러 등록 및 키 이벤트 핸들러 등록.
+                                // 키 이벤트는 포커싱 해제 대신 엔터키를 쳐도 포커싱 해제처럼 이벤트 핸들러가 실행되게 하려고.
+                                edit_textbox.focusout(edit_completed_handler);
+                                edit_textbox.keypress(function(e) {
+                                    if(e.which == 13) {
+                                        edit_completed_handler();
+                                    }
+                                });
+                            }
+                        };
+
+                        // 위에 정의된, 항목 클릭시 편집 텍스트로 바뀌는 핸들러를 항목들에 클릭 이벤트 핸들러로 등록한다.
+                        item_li.click(edit_handler);
+                    }
+
+                    // 예문 등 정보를 받아올 AJAX 실행.
+                    // insert_form : 새로운 예문을 추가하는 텍스트박스 및 버튼 바로 전에 넣을거니까 그 텍스트박스 및 버튼.
+                    // detail_type : 서버에 요청할 정보 타입. 'examples', 'synonyms' 등
+                    function request_word_detail(insert_form, detail_type){
+                        var dat = {"detail_type":detail_type, "word":word};
+                        $.ajax({
+                            type:'POST', // 메서드는 POST
+                            url:'/get_detail',  // 서버에 요청할 주소는 /add (start.py에 add_word() 함수를 실행할거임.
+                            data:dat,   
+                            success:function(res,st,req){ // 성공시 실행될 핸들러.
+                                var result_data = $.parseJSON(res); // 결과를 JSON 파싱.
+                                for (var row in result_data) {
+                                    create_new_word_detail_item(insert_form, result_data[row], detail_type);
+                                }
+                            },
+                            error:function(res,st,req){
+                            }
+                        });
+                    }
 
                     
+                    // 예문 등 정보를 서버에다가 저장할 AJAX 실행.
+                    // item : <li></li> 태그의 jquery.
+                    // newvalue : 저장할 새로운 정보.
+                    // insert_form : 새로운 예문을 추가하는 텍스트박스 및 버튼 바로 전에 넣을거니까 그 텍스트박스 및 버튼.
+                    // detail_type : 서버에 요청할 정보 타입. 'examples', 'synonyms' 등
+                    function save_word_detail(item, newvalue, insert_form, detail_type){
+                        if (!item.length && !newvalue.length)
+                            return;
+
+                        dat = {"word":word,"detail_type":detail_type};
+
+                        // <li></li> 태그 jquery가 발견되어 전달되었다면 해당 jquery에서 'oldvalue' 저장 값 가져오기.
+                        if (item.length) {
+                            dat['oldone'] = item.data('oldvalue');
+                        } else {
+                            dat['oldone'] = '';
+                        }
+
+                        dat['newone'] = newvalue;
+
+                        $.ajax({
+                            type:'POST', // 메서드는 POST
+                            url:'/change_detail',  // 서버에 요청할 주소는 /add (start.py에 add_word() 함수를 실행할거임.
+                            data:dat,   
+                            success:function(res,st,req){ // 성공시 실행될 핸들러.
+                                if (res === 'new') {
+                                    create_new_word_detail_item(insert_form, newvalue, detail_type);
+                                } else if (res === 'del') {
+                                    item.fadeOut(250, function () {
+                                        item.remove();
+                                    });
+                                } else if (res === 'mod') {
+                                    item.html(newvalue);
+                                }
+                            },
+                            error:function(res,st,req){
+                                alert('서버에 저장하는 작업이 실패하였습니다.');
+                            }
+                        });
+                    }
+                    
+                    // 서버에 정보 요청 전에 우선 열려있다고 처리.
+                    // 지금 이 세부 항목은 열려 있다고 나타내기 위한 임시 저장 값 저장.
+                    $(this).data('mode', 'detail');
+
+                    // 나중에 세부 항목을 닫을 때, 새롭게 만들어진 테이블 행을 삭제하기 위해서, 새롭게 만든 테이블 행을 임시 저장 값에 저장.
+                    $(this).data('new_row', new_row);
+
+
+
+                    // 새로운 예문 등을 등록하는 텍스트 박스 및 버튼.
+                    var new_example_form = $('<li><div class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Example..." id="new_example_textbox"/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn" id="new_example_btn">Add</button></div></div></div></div></li>');
+                    examples_ul.append(new_example_form);
+                    var new_synonym_form = $('<li><div class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Synonym..." id="new_synonym_textbox"/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn" id="new_synonym_btn">Add</button></div></div></div></div></li>');
+                    synonyms_ul.append(new_synonym_form);
+                    var new_antonym_form = $('<li><div class="form-inline min-100 min-table"><div class="form-group max-100"><div class="min-table-row w-100"><div class="min-table-cell w-100 pr-1"><input type="text" class="form-control form-control-sm mr-sm-1 w-100" placeholder="New Antonym..." id="new_antonym_textbox"/></div><div class="min-table-cell"><button class="btn btn-sm btn-info my-1 px-4 max-btn" id="new_antonym_btn">Add</button></div></div></div></div></li>');
+                    antonyms_ul.append(new_antonym_form);
+
+                    // ul을 card-body에 추가.
+                    examples_body.append(examples_ul);
+                    synonyms_body.append(synonyms_ul);
+                    antonyms_body.append(antonyms_ul);
+
+
                     // 세부 내용 본문 (card 클래스를 가졌던 div 레이어) 에 예문, 유의어, 반의어 태그를 추가할 것임.
                     card.append(examples_body);
                     card.append(synonyms_body);
@@ -269,32 +354,56 @@
 
                     // 새롭게 삽입된 테이블 행에 세부 내용 본문을 넣을 것임.
                     new_td.append(card);
-                    
-                    // 지금 이 세부 항목은 열려 있다고 나타내기 위한 임시 저장 값 저장.
-                    $(this).data('mode', 'detail');
+
+                    // 이벤트 등록 [예문]
+                    $('#new_example_btn').click(function () {
+                        save_word_detail('', $('#new_example_textbox').val(), new_example_form, 'example');
+                        $('#new_example_textbox').val('');
+                    });
+                    $('#new_example_textbox').keypress(function(e) {
+                        if(e.which == 13) {
+                            save_word_detail('', $('#new_example_textbox').val(), new_example_form, 'example');
+                            $('#new_example_textbox').val('');
+                        }
+                    });
+                    // 이벤트 등록 [유의어]
+                    $('#new_synonym_btn').click(function () {
+                        save_word_detail('', $('#new_synonym_textbox').val(), new_synonym_form, 'synonym');
+                        $('#new_synonym_textbox').val('');
+                    });
+                    $('#new_synonym_textbox').keypress(function(e) {
+                        if(e.which == 13) {
+                            save_word_detail('', $('#new_synonym_textbox').val(), new_synonym_form, 'synonym');
+                            $('#new_synonym_textbox').val('');
+                        }
+                    });
+                    // 이벤트 등록 [반의어]
+                    $('#new_antonym_btn').click(function () {
+                        save_word_detail('', $('#new_antonym_textbox').val(), new_antonym_form, 'antonym');
+                        $('#new_antonym_textbox').val('');
+                    });
+                    $('#new_antonym_textbox').keypress(function(e) {
+                        if(e.which == 13) {
+                            save_word_detail('', $('#new_antonym_textbox').val(), new_antonym_form, 'antonym');
+                            $('#new_antonym_textbox').val('');
+                        }
+                    });
+
+                    // 서버에 정보 요청
+                    request_word_detail(new_example_form, 'example');
+                    request_word_detail(new_synonym_form, 'synonym');
+                    request_word_detail(new_antonym_form, 'antonym');
 
                     // 이제 새롭게 삽입된 테이블 행을 fade 효과로 나타나게 함.
                     new_row.fadeIn(250, function () {
                         new_row.show();
                     });
-
-                    // 나중에 세부 항목을 닫을 때, 새롭게 만들어진 테이블 행을 삭제하기 위해서, 새롭게 만든 테이블 행을 임시 저장 값에 저장.
-                    $(this).data('new_row', new_row);
                 }
 
 
                 // 여기는 단어 세부 항목이 열려 있는 상태이다. 닫아야 한다.
                 else {
-                    // 임시 저장 값에 저장된 새롭게 만든 테이블 행을 불러온다.
-                    var new_row = $(this).data('new_row');
-
-                    // 새롭게 삽입되었던 행을 fade 효과로 사라지게 하고, 다 사라지면 태그 삭제.
-                    new_row.fadeOut(250, function () {
-                        new_row.remove();
-                    });
-
-                    // 지금 이 세부 항목은 닫혀 있다고 나타내기 위한 임시 저장 값 저장.
-                    $(this).data('mode', 'summary');
+                    collapse($(this));
                 }
 			}
 

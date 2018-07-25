@@ -89,7 +89,41 @@ def add_word():
     except sqlite3.IntegrityError: # 단어 추가시도하다가 이미 있는 단어면 이 예외가 나오더라.
         abort(400)                 # HTTP 에러 코드 400을 보냄. html에서 400을 받으면 중복 단어로 처리하게 만들어야 한다.
         
+@app.route('/get_detail', methods=['POST'])
+def get_detail():
+    detail_type = request.form['detail_type']
+    word = request.form['word']
+    logging.debug('[get_detail] detail_type = ' + str(detail_type))
+    logging.debug('[get_detail] word = ' + str(word))
 
+    if (detail_type == 'example'):              # 예문 가져오기
+        return json.dumps(examples.get(word))
+    elif (detail_type == 'synonym'):            # 유의어 가져오기
+        return json.dumps(synonyms.get(word))
+    elif (detail_type == 'antonym'):            # 반의어 가져오기
+        return json.dumps(antonyms.get(word))
+
+    abort(400)
+       
+@app.route('/change_detail', methods=['POST'])
+def change_detail():
+    detail_type = request.form['detail_type']
+    word = request.form['word']
+    oldone = request.form['oldone']
+    newone = request.form['newone']
+    logging.debug('[change_detail] detail_type = ' + str(detail_type))
+    logging.debug('[change_detail] word = ' + str(word))
+    logging.debug('[change_detail] oldone = ' + str(oldone))
+    logging.debug('[change_detail] newone = ' + str(newone))
+
+    if (detail_type == 'example'):              # 예문 변경 등록 삭제
+        return examples.change(word, oldone, newone)
+    elif (detail_type == 'synonym'):            # 유의어 변경 등록 삭제
+        return synonyms.change(word, oldone, newone)
+    elif (detail_type == 'antonym'):            # 반의어 변경 등록 삭제
+        return antonyms.change(word, oldone, newone)
+
+    abort(400) 
 
 ###### 로직 영역 끝 ######
 

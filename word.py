@@ -93,11 +93,14 @@ class WordContext:
             o_one = oldone.strip()
             n_one = newone.strip()
             if (len(n_one) == 0):
-                curs.execute('update `' + self.name + 's` set `' + self.name + '` = ? where `word` = ? and `' + self.name + '` = ?', [n_one, word, o_one])
+                curs.execute('delete from `' + self.name + 's` where `word` = ? and `' + self.name + '` = ?', [word, o_one])
+                return 'del'
             elif (len(o_one) == 0):
                 curs.execute('insert into `' + self.name + 's` (`word`, `' + self.name + '`) values (?, ?)', [word, n_one])
+                return 'new'
             else:
-                curs.execute('delete from `' + self.name + 's` where `word` = ? and `' + self.name + '` = ?', [word, o_one])
+                curs.execute('update `' + self.name + 's` set `' + self.name + '` = ? where `word` = ? and `' + self.name + '` = ?', [n_one, word, o_one])
+                return 'mod'
     # 해당 단어의 현재 클래스가 관리하는 세부 항목을 가져온다.
     def get(self, word):
         with sqlite3.connect(self.db_name + '.db', check_same_thread = False) as conn:
